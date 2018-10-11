@@ -56,8 +56,7 @@ namespace AnimalsService.Services
                 return;
             }
 
-            //todo.Name = item.Name;
-
+            
             _context.PetVaccines.Update(todo);
             _context.SaveChanges();
             return;

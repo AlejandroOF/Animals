@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using AnimalsService.Services;
+using AnimalsService.Models;
 
 
 namespace AnimalsService.Services
 {
    public interface IUserService
     {
-        List<User> GetAll();
+        List<UserVm> GetAll();
 
-        User GetById(int id);
+        UserVm GetById(int id);
 
         void Delete(int id);
 
-        int Create(User item);
+        int Create(UserVm item);
 
-        void Update(int id, User item);
+        void Update(int id, UserVm item);
     }
 }

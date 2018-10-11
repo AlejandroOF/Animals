@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AnimalsService.Models;
 
 namespace AnimalsService.Services
 {
     public interface IVaccine
     {
-        List<Vaccine> GetAll();
+        List<VaccineVm> GetAll();
 
-        Vaccine GetById(int id);
+        VaccineVm GetById(int id);
 
         void Delete(int id);
 
-        int Create(Vaccine item);
+        int Create(VaccineVm item);
 
-        void Update(int id, Vaccine item);
+        void Update(int id, VaccineVm item);
     }
 }

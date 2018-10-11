@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using AnimalsData.Entities;
 using AnimalsService.Services;
+using AnimalsService.Mapper;
+using AnimalsService.Models;
 
 namespace Animals
 {
@@ -52,6 +54,9 @@ namespace Animals
             services.AddScoped<IAnimalTypeService, AnimalTypeService>();
             services.AddScoped<IPetVaccine, PetVaccineService>();
             services.AddScoped<IVaccine, VaccineService>();
+            services.AddScoped<IPetMapper<Pet,Petvm>, PetMapper>();
+            services.AddScoped<IUserMapper<User, UserVm>, UserMapper>();
+            services.AddScoped<IVaccineMapper<Vaccine, VaccineVm>, VaccineMapper>();
 
         }
 

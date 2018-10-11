@@ -1,55 +1,50 @@
 ﻿using AnimalsData.Entities;
 using AnimalsService.Models;
-using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
 
 namespace AnimalsService.Mapper
 {
-    public class PetMapper : IPetMapper<Pet, PetVm>
+    public class PetMapper : IPetMapper<Pet, Petvm>
     {
-        public Pet MaptoEntetity(PetVm model)
+        public Pet MaptoEntetity(Petvm model)
         {
-
-            Pet pet = new Pet();
+            var pet = new Pet();
 
             pet.Id = model.Id;
-
             pet.Name = model.Name;
-
             pet.DateOfBirth = model.Dob;
-
             pet.UserId = model.UserId;
+            pet.AnimalTypeId = model.AnimalTypeId;
 
             return pet;
-
         }
 
-        public IEnumerable<Pet> MapToEntities(IEnumerable<PetVm> models)
+        public IEnumerable<Pet> MapToEntities(IEnumerable<Petvm> models)
         {
             return models.Select(MaptoEntetity);
         }
 
-        public IEnumerable<PetVm> MapToModels(IEnumerable<Pet> entities)
+        public IEnumerable<Petvm> MapToModels(IEnumerable<Pet> entities)
         {
-           
             return entities.Select(MapToModel);
         }
 
-        public PetVm MapToModel(Pet entity)
+        public Petvm MapToModel(Pet entity)
         {
-            var petVm = new PetVm();
+            var petVm = new Petvm();
             petVm.Vaccines = new List<VaccineVm>();
 
             petVm.Id = entity.Id;
-
             petVm.Name = entity.Name;
-
             petVm.Dob = entity.DateOfBirth;
-
             petVm.UserId = entity.UserId;
+            petVm.AnimalTypeId = entity.AnimalTypeId;
+
+            if(entity.PetVaccines == null)
+            {
+                return petVm;
+            }
 
             foreach (var item in entity.PetVaccines)
             {
@@ -60,9 +55,7 @@ namespace AnimalsService.Mapper
                 petVm.Vaccines.Add(vaccineVm);
             }
 
-
             return petVm;
-           
         }
     }
 }

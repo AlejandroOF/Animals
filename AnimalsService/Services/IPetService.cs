@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using AnimalsService.Models;
 
 namespace AnimalsService.Services
 {
    public interface IPetService
     {
-        List<Pet> GetAll();
+        List<Petvm> GetAll();
 
-        Pet GetById(int id);
+        Petvm GetById(int id);
 
         void Delete(int id);
 
-        int Create(Pet item);
+        int Create(Petvm item);
 
-        void Update(int id, Pet item);
+        void Update(int id, Petvm item);
     }
 }

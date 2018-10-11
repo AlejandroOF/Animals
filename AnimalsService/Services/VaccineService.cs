@@ -4,6 +4,8 @@ using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AnimalsData.Entities;
+using AnimalsService.Mapper;
+using AnimalsService.Models;
 
 
 
@@ -12,17 +14,20 @@ namespace AnimalsService.Services
     public class VaccineService : IVaccine
     {
         public readonly AnimalsContext _context;
+        public readonly IVaccineMapper<Vaccine, VaccineVm> _mapper;
 
-        public VaccineService(AnimalsContext context)
+        public VaccineService(AnimalsContext context, IVaccineMapper<Vaccine, VaccineVm> mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-        public int Create(Vaccine item)
+        public int Create(VaccineVm item)
         {
-            _context.Vaccines.Add(item);
+            var ent = _mapper.MaptoEntity(item);
+            _context.Vaccines.Add(ent);
             _context.SaveChanges();
 
-            return item.Id;
+            return ent.Id;
         }
 
         public void Delete(int id)
@@ -37,27 +42,31 @@ namespace AnimalsService.Services
             _context.SaveChanges();
         }
 
-        public List<Vaccine> GetAll()
+        public List<VaccineVm> GetAll()
         {
-            return _context.Vaccines.ToList();
+            var get = _context.Vaccines.ToList();
+
+            return _mapper.MapToModels(get).ToList();
         }
 
-        public Vaccine GetById(int id)
+        public VaccineVm GetById(int id)
         {
             var item = _context.Vaccines.Find(id);
 
-            return item;
+            return _mapper.MapToModel(item);
         }
 
-        public void Update(int id, Vaccine item)
+        public void Update(int id, VaccineVm item)
         {
+            var ent = _mapper.MaptoEntity(item);
+
             var vaccine = _context.Vaccines.Find(id);
             if(vaccine == null)
             {
                 return;
             }
 
-            vaccine.Name = item.Name;
+            vaccine.Name = ent.Name;
 
             _context.Vaccines.Update(vaccine);
             _context.SaveChanges();

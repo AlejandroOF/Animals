@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AnimalsData.Entities;
 using AnimalsService.Services;
+using AnimalsService.Models;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,7 +24,7 @@ namespace Animals.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Pet>> GetAll()
+        public ActionResult<List<Petvm>> GetAll()
         {
             var geta = _service.GetAll();
             return geta;
@@ -30,7 +32,7 @@ namespace Animals.Controllers
 
 
         [HttpGet("{id:int}")]
-        public ActionResult<Pet> GetById(int id)
+        public ActionResult<Petvm> GetById(int id)
         {
 
             var getb = _service.GetById(id);
@@ -38,7 +40,7 @@ namespace Animals.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Pet item)
+        public IActionResult Create(Petvm item)
         {
 
             var id = _service.Create(item);
@@ -46,7 +48,7 @@ namespace Animals.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, Pet item)
+        public IActionResult Update(int id, Petvm item)
         {
             _service.Update(id, item);
             return NoContent();

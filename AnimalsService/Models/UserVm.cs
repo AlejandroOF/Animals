@@ -4,12 +4,12 @@ using System.Text;
 
 namespace AnimalsService.Models
 {
-   public class VaccineVm
-    {   
+    public class UserVm
+    {
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Username { get; set; }
 
-        public DateTime AppliedDate { get; set; }
+        public List<Petvm> Pets { get; set; }
     }
 }

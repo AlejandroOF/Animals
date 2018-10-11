@@ -4,6 +4,8 @@ using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using AnimalsData.Entities;
+using AnimalsService.Mapper;
+using AnimalsService.Models;
 
 
 namespace AnimalsService.Services
@@ -11,18 +13,22 @@ namespace AnimalsService.Services
     public class UserService : IUserService
     {
         private readonly AnimalsContext _context;
+        private readonly IUserMapper<User, UserVm> _mapper;
 
-        public UserService(AnimalsContext context)
+        public UserService(AnimalsContext context, IUserMapper<User, UserVm> mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public int Create(User item)
+        public int Create(UserVm item)
         {
-            _context.Users.Add(item);
+            var ent = _mapper.MaptoEntity(item);
+
+            _context.Users.Add(ent);
             _context.SaveChanges();
 
-            return item.Id;
+            return ent.Id;
         }
 
         public void Delete(int id)
@@ -38,24 +44,26 @@ namespace AnimalsService.Services
             _context.SaveChanges();
         }
 
-        public List<User> GetAll()
+        public List<UserVm> GetAll()
         {
-            var items = _context.Users.Include(x => x.Pets).ToList();
-            return items;
+            var get = _context.Users.ToList();
+
+            return _mapper.MapToModels(get).ToList();
         }
 
-        public User GetById(int id)
+        public UserVm GetById(int id)
         {
             var item = _context.Users.Include(x => x.Pets)
 
                 .SingleOrDefault(x => x.Id == id);
 
-            return item;
+            return _mapper.MapToModel(item);
 
         }
 
-        public void Update(int id, User item)
+        public void Update(int id, UserVm item)
         {
+
             var todo = _context.Users.Find(id);
             if (todo == null)
             {
