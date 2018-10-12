@@ -63,16 +63,18 @@ namespace AnimalsService.Services
 
         public void Update(int id, UserVm item)
         {
+            var ent = _mapper.MaptoEntity(item);
 
-            var todo = _context.Users.Find(id);
-            if (todo == null)
+            var todo = _context.Users.Any(x => x.Id == id);
+
+            if (!todo)
             {
                 return;
             }
 
-            todo.Username = item.Username;
+            ent.Id = id;
 
-            _context.Users.Update(todo);
+            _context.Users.Update(ent);
             _context.SaveChanges();
             return;
         }

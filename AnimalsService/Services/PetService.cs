@@ -15,7 +15,7 @@ namespace AnimalsService.Services
         private readonly AnimalsContext _context;
         private readonly IPetMapper<Pet, Petvm> _mapper;
 
-        public PetService(AnimalsContext context, IPetMapper<Pet,Petvm> mapper)
+        public PetService(AnimalsContext context, IPetMapper<Pet, Petvm> mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -50,8 +50,8 @@ namespace AnimalsService.Services
 
         public Petvm GetById(int id)
         {
-           
-            var item = _context.Pets 
+
+            var item = _context.Pets
                     .Include(x => x.AnimalType)
                     .Include(x => x.PetVaccines)
                         .ThenInclude(x => x.Vaccine)
@@ -63,20 +63,17 @@ namespace AnimalsService.Services
 
         public void Update(int id, Petvm item)
         {
-             var ent = _mapper.MaptoEntetity(item);
-            
+            var ent = _mapper.MaptoEntetity(item);
 
-            var todo = _context.Pets.Find(id);
-            if (todo == null)
+            var exist = _context.Pets.Any(x => x.Id == id);
+            if (!exist)
             {
                 return;
             }
 
-            todo.Name = ent.Name;
+            ent.Id = id;
 
-            //var ent2 = _mapper.MaptoEntetity(todo); 
-
-            _context.Pets.Update(todo);
+            _context.Pets.Update(ent);
             _context.SaveChanges();
 
             return;

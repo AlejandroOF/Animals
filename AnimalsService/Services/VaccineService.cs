@@ -60,15 +60,14 @@ namespace AnimalsService.Services
         {
             var ent = _mapper.MaptoEntity(item);
 
-            var vaccine = _context.Vaccines.Find(id);
-            if(vaccine == null)
+            var vaccine = _context.Vaccines.Any(x => x.Id == id);
+            if(!vaccine)
             {
                 return;
             }
+            ent.Id = id;
 
-            vaccine.Name = ent.Name;
-
-            _context.Vaccines.Update(vaccine);
+            _context.Vaccines.Update(ent);
             _context.SaveChanges();
             return;
         }
